@@ -1,0 +1,100 @@
+{
+  "title": "Smart City Infrastructure Plan",
+  "outline": [
+    {
+      "level": "H1",
+      "text": "Vision and Goals",
+      "page": 1
+    },
+    {
+      "level": "H1",
+      "text": "Transportation",
+      "page": 1
+    },
+    {
+      "level": "H2",
+      "text": "Public Transit",
+      "page": 1
+    },
+    {
+      "level": "H3",
+      "text": "Bus Network",
+      "page": 1
+    },
+    {
+      "level": "H3",
+      "text": "Metro System",
+      "page": 1
+    },
+    {
+      "level": "H2",
+      "text": "Cycling Infrastructure",
+      "page": 2
+    },
+    {
+      "level": "H2",
+      "text": "EV Charging Stations",
+      "page": 2
+    },
+    {
+      "level": "H1",
+      "text": "Digital Infrastructure",
+      "page": 2
+    },
+    {
+      "level": "H2",
+      "text": "Broadband Network",
+      "page": 2
+    },
+    {
+      "level": "H2",
+      "text": "IoT Sensors",
+      "page": 3
+    },
+    {
+      "level": "H3",
+      "text": "Traffic Sensors",
+      "page": 3
+    },
+    {
+      "level": "H3",
+      "text": "Environmental Sensors",
+      "page": 3
+    },
+    {
+      "level": "H1",
+      "text": "Energy",
+      "page": 3
+    },
+    {
+      "level": "H2",
+      "text": "Smart Grid",
+      "page": 3
+    },
+    {
+      "level": "H2",
+      "text": "District Heating",
+      "page": 4
+    },
+    {
+      "level": "H1",
+      "text": "Governance",
+      "page": 4
+    },
+    {
+      "level": "H2",
+      "text": "Data Platform",
+      "page": 4
+    },
+    {
+      "level": "H2",
+      "text": "Citizen Portal",
+      "page": 4
+    },
+    {
+      "level": "H1",
+      "text": "Implementation Timeline",
+      "page": 5
+    }
+  ]
+}

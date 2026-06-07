@@ -1,0 +1,105 @@
+{
+  "title": "Software Engineering Best Practices",
+  "outline": [
+    {
+      "level": "H1",
+      "text": "INTRODUCTION",
+      "page": 1
+    },
+    {
+      "level": "H1",
+      "text": "CODE QUALITY",
+      "page": 1
+    },
+    {
+      "level": "H2",
+      "text": "Static Analysis",
+      "page": 1
+    },
+    {
+      "level": "H2",
+      "text": "Code Reviews",
+      "page": 1
+    },
+    {
+      "level": "H3",
+      "text": "Review Checklist",
+      "page": 1
+    },
+    {
+      "level": "H3",
+      "text": "Common Pitfalls",
+      "page": 2
+    },
+    {
+      "level": "H1",
+      "text": "TESTING STRATEGIES",
+      "page": 2
+    },
+    {
+      "level": "H2",
+      "text": "Unit Testing",
+      "page": 2
+    },
+    {
+      "level": "H2",
+      "text": "Integration Testing",
+      "page": 2
+    },
+    {
+      "level": "H2",
+      "text": "End-to-End Testing",
+      "page": 2
+    },
+    {
+      "level": "H3",
+      "text": "Test Automation Frameworks",
+      "page": 3
+    },
+    {
+      "level": "H1",
+      "text": "DEPLOYMENT",
+      "page": 3
+    },
+    {
+      "level": "H2",
+      "text": "Continuous Integration",
+      "page": 3
+    },
+    {
+      "level": "H2",
+      "text": "Continuous Deployment",
+      "page": 3
+    },
+    {
+      "level": "H3",
+      "text": "Blue-Green Deployments",
+      "page": 3
+    },
+    {
+      "level": "H3",
+      "text": "Canary Releases",
+      "page": 4
+    },
+    {
+      "level": "H1",
+      "text": "MONITORING",
+      "page": 4
+    },
+    {
+      "level": "H2",
+      "text": "Logging",
+      "page": 4
+    },
+    {
+      "level": "H2",
+      "text": "Alerting",
+      "page": 4
+    },
+    {
+      "level": "H1",
+      "text": "CONCLUSION",
+      "page": 5
+    }
+  ]
+}

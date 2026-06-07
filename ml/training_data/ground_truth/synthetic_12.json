@@ -1,0 +1,105 @@
+{
+  "title": "Database Design and Optimization",
+  "outline": [
+    {
+      "level": "H1",
+      "text": "Introduction",
+      "page": 1
+    },
+    {
+      "level": "H1",
+      "text": "Schema Design",
+      "page": 1
+    },
+    {
+      "level": "H2",
+      "text": "Normalization",
+      "page": 1
+    },
+    {
+      "level": "H3",
+      "text": "First Normal Form",
+      "page": 1
+    },
+    {
+      "level": "H3",
+      "text": "Second Normal Form",
+      "page": 2
+    },
+    {
+      "level": "H3",
+      "text": "Third Normal Form",
+      "page": 2
+    },
+    {
+      "level": "H2",
+      "text": "Denormalization Strategies",
+      "page": 2
+    },
+    {
+      "level": "H1",
+      "text": "Indexing",
+      "page": 2
+    },
+    {
+      "level": "H2",
+      "text": "B-Tree Indexes",
+      "page": 3
+    },
+    {
+      "level": "H2",
+      "text": "Hash Indexes",
+      "page": 3
+    },
+    {
+      "level": "H2",
+      "text": "Composite Indexes",
+      "page": 3
+    },
+    {
+      "level": "H1",
+      "text": "Query Optimization",
+      "page": 3
+    },
+    {
+      "level": "H2",
+      "text": "Query Plans",
+      "page": 3
+    },
+    {
+      "level": "H2",
+      "text": "Join Strategies",
+      "page": 3
+    },
+    {
+      "level": "H3",
+      "text": "Nested Loop",
+      "page": 4
+    },
+    {
+      "level": "H3",
+      "text": "Hash Join",
+      "page": 4
+    },
+    {
+      "level": "H1",
+      "text": "Replication",
+      "page": 4
+    },
+    {
+      "level": "H2",
+      "text": "Master-Slave",
+      "page": 5
+    },
+    {
+      "level": "H2",
+      "text": "Multi-Master",
+      "page": 5
+    },
+    {
+      "level": "H1",
+      "text": "Backup and Recovery",
+      "page": 5
+    }
+  ]
+}

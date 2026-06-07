@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    container_name: pdf-extractor-api
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      # Mount local input/output for CLI batch processing
+      - ./input:/app/input
+      - ./output:/app/output
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  # Optional: run CLI batch processing as a one-shot container
+  cli:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    container_name: pdf-extractor-cli
+    volumes:
+      - ./input:/app/input
+      - ./output:/app/output
+    entrypoint: ["python", "process_pdfs.py", "/app/input", "/app/output"]
+    profiles:
+      - cli  # Only runs when: docker compose --profile cli up

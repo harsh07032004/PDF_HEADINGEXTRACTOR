@@ -1,0 +1,105 @@
+{
+  "title": "Data Privacy and Security Policy",
+  "outline": [
+    {
+      "level": "H1",
+      "text": "1. Purpose and Scope",
+      "page": 1
+    },
+    {
+      "level": "H1",
+      "text": "2. Definitions",
+      "page": 1
+    },
+    {
+      "level": "H1",
+      "text": "3. Data Classification",
+      "page": 1
+    },
+    {
+      "level": "H2",
+      "text": "3.1 Public Data",
+      "page": 1
+    },
+    {
+      "level": "H2",
+      "text": "3.2 Internal Data",
+      "page": 2
+    },
+    {
+      "level": "H2",
+      "text": "3.3 Confidential Data",
+      "page": 2
+    },
+    {
+      "level": "H3",
+      "text": "3.3.1 PII",
+      "page": 2
+    },
+    {
+      "level": "H3",
+      "text": "3.3.2 Financial Data",
+      "page": 2
+    },
+    {
+      "level": "H1",
+      "text": "4. Access Controls",
+      "page": 2
+    },
+    {
+      "level": "H2",
+      "text": "4.1 Authentication",
+      "page": 3
+    },
+    {
+      "level": "H2",
+      "text": "4.2 Authorization",
+      "page": 3
+    },
+    {
+      "level": "H3",
+      "text": "4.2.1 Role-Based Access",
+      "page": 3
+    },
+    {
+      "level": "H1",
+      "text": "5. Encryption",
+      "page": 4
+    },
+    {
+      "level": "H2",
+      "text": "5.1 Data at Rest",
+      "page": 4
+    },
+    {
+      "level": "H2",
+      "text": "5.2 Data in Transit",
+      "page": 4
+    },
+    {
+      "level": "H1",
+      "text": "6. Incident Response",
+      "page": 4
+    },
+    {
+      "level": "H2",
+      "text": "6.1 Detection",
+      "page": 4
+    },
+    {
+      "level": "H2",
+      "text": "6.2 Containment",
+      "page": 4
+    },
+    {
+      "level": "H2",
+      "text": "6.3 Recovery",
+      "page": 5
+    },
+    {
+      "level": "H1",
+      "text": "7. Compliance",
+      "page": 5
+    }
+  ]
+}

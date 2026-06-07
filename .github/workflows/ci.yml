@@ -1,0 +1,117 @@
+name: CI — PDF Heading Extractor
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ── Lint & Type Check ──────────────────────────────────────────────────────
+  lint:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install lint tools
+        run: pip install ruff mypy
+
+      - name: Ruff — lint check
+        run: ruff check .
+
+      - name: Ruff — format check
+        run: ruff format --check .
+
+      - name: Mypy — type check
+        run: mypy extractor/ api/ --ignore-missing-imports
+
+  # ── Unit & Integration Tests ───────────────────────────────────────────────
+  test:
+    name: Tests (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    needs: lint
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run unit tests (fast)
+        run: pytest tests/ -m "unit" --tb=short -q
+
+      - name: Run integration tests
+        run: pytest tests/ -m "integration" --tb=short -q
+
+      - name: Run full test suite with coverage
+        run: pytest tests/ --tb=short -q --cov=extractor --cov=api --cov-report=xml
+
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v4
+        if: matrix.python-version == '3.11'
+        with:
+          files: ./coverage.xml
+          fail_ci_if_error: false
+
+  # ── Docker Build ───────────────────────────────────────────────────────────
+  docker:
+    name: Docker Build & Smoke Test
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t pdf-heading-extractor:ci .
+
+      - name: Smoke test — health endpoint
+        run: |
+          docker run --rm -d -p 8000:8000 --name extractor-ci pdf-heading-extractor:ci
+          sleep 5
+          curl --fail http://localhost:8000/health
+          docker stop extractor-ci
+
+  # ── Evaluation Report ──────────────────────────────────────────────────────
+  evaluate:
+    name: Evaluation Metrics
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run evaluation harness
+        run: python evaluate.py --output eval_report.json --verbose
+
+      - name: Upload evaluation report
+        uses: actions/upload-artifact@v4
+        with:
+          name: evaluation-report
+          path: eval_report.json
+          retention-days: 30

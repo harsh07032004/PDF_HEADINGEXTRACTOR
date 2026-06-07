@@ -1,0 +1,100 @@
+{
+  "title": "Renewable Energy Systems Report",
+  "outline": [
+    {
+      "level": "H1",
+      "text": "Introduction",
+      "page": 1
+    },
+    {
+      "level": "H2",
+      "text": "Global Energy Landscape",
+      "page": 1
+    },
+    {
+      "level": "H2",
+      "text": "Renewable Energy Targets",
+      "page": 1
+    },
+    {
+      "level": "H1",
+      "text": "Solar Energy",
+      "page": 1
+    },
+    {
+      "level": "H2",
+      "text": "Photovoltaic Technology",
+      "page": 2
+    },
+    {
+      "level": "H3",
+      "text": "Monocrystalline Panels",
+      "page": 2
+    },
+    {
+      "level": "H3",
+      "text": "Polycrystalline Panels",
+      "page": 2
+    },
+    {
+      "level": "H2",
+      "text": "Solar Thermal",
+      "page": 2
+    },
+    {
+      "level": "H1",
+      "text": "Wind Energy",
+      "page": 2
+    },
+    {
+      "level": "H2",
+      "text": "Onshore Wind",
+      "page": 3
+    },
+    {
+      "level": "H2",
+      "text": "Offshore Wind",
+      "page": 3
+    },
+    {
+      "level": "H3",
+      "text": "Floating Turbines",
+      "page": 3
+    },
+    {
+      "level": "H1",
+      "text": "Energy Storage",
+      "page": 3
+    },
+    {
+      "level": "H2",
+      "text": "Battery Technologies",
+      "page": 3
+    },
+    {
+      "level": "H3",
+      "text": "Lithium-Ion",
+      "page": 4
+    },
+    {
+      "level": "H3",
+      "text": "Solid State",
+      "page": 4
+    },
+    {
+      "level": "H2",
+      "text": "Hydrogen Storage",
+      "page": 4
+    },
+    {
+      "level": "H1",
+      "text": "Grid Integration",
+      "page": 4
+    },
+    {
+      "level": "H1",
+      "text": "Policy Recommendations",
+      "page": 5
+    }
+  ]
+}

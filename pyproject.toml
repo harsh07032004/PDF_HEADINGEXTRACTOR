@@ -1,0 +1,65 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pdf_heading_extractor"
+version = "0.1.0"
+description = "A production-grade multilingual PDF document-structure extraction engine."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = [
+    "PyMuPDF>=1.24.0",
+    "scikit-learn>=1.4.0",
+    "fastapi>=0.110.0",
+    "uvicorn>=0.29.0",
+    "pydantic>=2.6.4",
+    "spacy>=3.7.4",
+]
+
+[project.scripts]
+extract-pdf = "extractor.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["extractor"]
+
+# ─── Ruff: replaces Black + Flake8 + isort ────────────────────────────────────
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+# E/F = pycodestyle + pyflakes, I = isort, UP = pyupgrade, N = pep8-naming
+select = ["E", "F", "I", "UP", "N"]
+ignore = [
+    "E501",  # Line too long — handled by formatter
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]  # Allow assert in tests
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+
+# ─── Mypy: strict type checking ───────────────────────────────────────────────
+[tool.mypy]
+python_version = "3.10"
+strict = true
+ignore_missing_imports = true
+warn_return_any = true
+warn_unused_configs = true
+show_error_codes = true
+
+# ─── Pytest configuration ─────────────────────────────────────────────────────
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers --tb=short"
+testpaths = ["tests"]
+markers = [
+    "slow: marks tests that process real PDFs (may take a few seconds)",
+    "unit: fast isolated unit tests",
+    "integration: tests that exercise the full pipeline",
+]

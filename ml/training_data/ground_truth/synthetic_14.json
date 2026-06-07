@@ -1,0 +1,100 @@
+{
+  "title": "Research Methodology Handbook",
+  "outline": [
+    {
+      "level": "H1",
+      "text": "PART I: FOUNDATIONS",
+      "page": 1
+    },
+    {
+      "level": "H2",
+      "text": "Research Paradigms",
+      "page": 1
+    },
+    {
+      "level": "H2",
+      "text": "Ethics in Research",
+      "page": 1
+    },
+    {
+      "level": "H1",
+      "text": "PART II: QUANTITATIVE METHODS",
+      "page": 2
+    },
+    {
+      "level": "H2",
+      "text": "Experimental Design",
+      "page": 2
+    },
+    {
+      "level": "H3",
+      "text": "Control Groups",
+      "page": 2
+    },
+    {
+      "level": "H3",
+      "text": "Randomization",
+      "page": 2
+    },
+    {
+      "level": "H2",
+      "text": "Survey Research",
+      "page": 2
+    },
+    {
+      "level": "H2",
+      "text": "Statistical Analysis",
+      "page": 3
+    },
+    {
+      "level": "H3",
+      "text": "Descriptive Statistics",
+      "page": 3
+    },
+    {
+      "level": "H3",
+      "text": "Inferential Statistics",
+      "page": 3
+    },
+    {
+      "level": "H1",
+      "text": "PART III: QUALITATIVE METHODS",
+      "page": 3
+    },
+    {
+      "level": "H2",
+      "text": "Interviews",
+      "page": 4
+    },
+    {
+      "level": "H2",
+      "text": "Focus Groups",
+      "page": 4
+    },
+    {
+      "level": "H2",
+      "text": "Case Studies",
+      "page": 4
+    },
+    {
+      "level": "H1",
+      "text": "PART IV: MIXED METHODS",
+      "page": 4
+    },
+    {
+      "level": "H2",
+      "text": "Sequential Design",
+      "page": 4
+    },
+    {
+      "level": "H2",
+      "text": "Concurrent Design",
+      "page": 4
+    },
+    {
+      "level": "H1",
+      "text": "PART V: WRITING UP",
+      "page": 5
+    }
+  ]
+}

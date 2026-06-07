@@ -1,14 +1,36 @@
 {
   "en": {
     "heading_patterns": [
-      "^(Chapter|CHAPTER|Section|SECTION|Part|PART)\\s+\\d+",
-      "^\\d+(\\.\\d+)*\\s+[A-Z].*"
+      "^(Chapter|CHAPTER|Section|SECTION|Part|PART|Appendix|APPENDIX)\\s+\\d+",
+      "^\\d+(\\.\\d+)*\\s+[A-Z].*",
+      "^(Introduction|Conclusion|Abstract|Summary|References|Bibliography|Overview|Background|Methodology|Results|Discussion|Acknowledgements?)$"
     ]
   },
   "es": {
     "heading_patterns": [
-      "^(Cap[ií]tulo|SECCI[ÓO]N|Parte)\\s+\\d+",
-      "^\\d+(\\.\\d+)*\\s+[A-ZÁÉÍÓÚÑ].*"
+      "^(Cap[ií]tulo|SECCI[ÓO]N|Parte|Ap[eé]ndice)\\s+\\d+",
+      "^\\d+(\\.\\d+)*\\s+[A-ZÁÉÍÓÚÑ].*",
+      "^(Introducci[oó]n|Conclusi[oó]n|Resumen|Referencias|Bibliograf[ií]a|Metodolog[ií]a|Resultados|Discusi[oó]n)$"
+    ]
+  },
+  "fr": {
+    "heading_patterns": [
+      "^(Chapitre|CHAPITRE|Section|SECTION|Partie|PARTIE|Annexe)\\s+\\d+",
+      "^\\d+(\\.\\d+)*\\s+[A-ZÀÂÄÉÈÊËÎÏÔÙÛÜŒÆ].*",
+      "^(Introduction|Conclusion|R[eé]sum[eé]|R[eé]f[eé]rences|Bibliographie|M[eé]thodologie|R[eé]sultats|Discussion)$"
+    ]
+  },
+  "de": {
+    "heading_patterns": [
+      "^(Kapitel|KAPITEL|Abschnitt|Teil|Anhang)\\s+\\d+",
+      "^\\d+(\\.\\d+)*\\s+[A-ZÄÖÜ].*",
+      "^(Einleitung|Zusammenfassung|Schluss|Literaturverzeichnis|Methodik|Ergebnisse|Diskussion|Anhang)$"
+    ]
+  },
+  "ja": {
+    "heading_patterns": [
+      "^第[一二三四五六七八九十百千\\d]+[章節部]",
+      "^\\d+(\\.\\d+)*\\s+[\\u3040-\\u30FF\\u4E00-\\u9FFF].*"
     ]
   }
 }

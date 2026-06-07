@@ -1,0 +1,98 @@
+[
+  {
+    "pdf_path": "C:\\Users\\TITAN\\Desktop\\PDF_EXTRACTOR\\ml\\kaggle_data\\pdfs\\kaggle_079_2Z5VOQ6G6CMR5GMVSAAXULXHXTMJPTM2.pdf",
+    "gt_file": "kaggle_001_kaggle_079_2Z5VOQ6G6CMR5GMVSAAXULXHXTMJPTM2.json",
+    "stem": "kaggle_001_kaggle_079_2Z5VOQ6G6CMR5GMVSAAXULXHXTMJPTM2",
+    "toc_entries": 15
+  },
+  {
+    "pdf_path": "C:\\Users\\TITAN\\Desktop\\PDF_EXTRACTOR\\ml\\kaggle_data\\pdfs\\kaggle_079_2Z5VOQ6G6CMR5GMVSAAXULXHXTMJPTM2.pdf",
+    "gt_file": "kaggle_002_kaggle_079_2Z5VOQ6G6CMR5GMVSAAXULXHXTMJPTM2.json",
+    "stem": "kaggle_002_kaggle_079_2Z5VOQ6G6CMR5GMVSAAXULXHXTMJPTM2",
+    "toc_entries": 15
+  },
+  {
+    "pdf_path": "C:\\Users\\TITAN\\Desktop\\PDF_EXTRACTOR\\ml\\kaggle_data\\pdfs\\kaggle_080_2Z5VOQ6G6CMR5GMVSAAXULXHXTMJPTM2.pdf",
+    "gt_file": "kaggle_003_kaggle_080_2Z5VOQ6G6CMR5GMVSAAXULXHXTMJPTM2.json",
+    "stem": "kaggle_003_kaggle_080_2Z5VOQ6G6CMR5GMVSAAXULXHXTMJPTM2",
+    "toc_entries": 15
+  },
+  {
+    "pdf_path": "C:\\Users\\TITAN\\Desktop\\PDF_EXTRACTOR\\ml\\kaggle_data\\pdfs\\kaggle_080_2Z5VOQ6G6CMR5GMVSAAXULXHXTMJPTM2.pdf",
+    "gt_file": "kaggle_004_kaggle_080_2Z5VOQ6G6CMR5GMVSAAXULXHXTMJPTM2.json",
+    "stem": "kaggle_004_kaggle_080_2Z5VOQ6G6CMR5GMVSAAXULXHXTMJPTM2",
+    "toc_entries": 15
+  },
+  {
+    "pdf_path": "C:\\Users\\TITAN\\Desktop\\PDF_EXTRACTOR\\ml\\kaggle_data\\pdfs\\kaggle_091_35REBWQXW3JLUKC6DAANAQ2P3RI5B6A6.pdf",
+    "gt_file": "kaggle_005_kaggle_091_35REBWQXW3JLUKC6DAANAQ2P3RI5B6A6.json",
+    "stem": "kaggle_005_kaggle_091_35REBWQXW3JLUKC6DAANAQ2P3RI5B6A6",
+    "toc_entries": 12
+  },
+  {
+    "pdf_path": "C:\\Users\\TITAN\\Desktop\\PDF_EXTRACTOR\\ml\\kaggle_data\\pdfs\\kaggle_091_35REBWQXW3JLUKC6DAANAQ2P3RI5B6A6.pdf",
+    "gt_file": "kaggle_006_kaggle_091_35REBWQXW3JLUKC6DAANAQ2P3RI5B6A6.json",
+    "stem": "kaggle_006_kaggle_091_35REBWQXW3JLUKC6DAANAQ2P3RI5B6A6",
+    "toc_entries": 12
+  },
+  {
+    "pdf_path": "C:\\Users\\TITAN\\Desktop\\PDF_EXTRACTOR\\ml\\kaggle_data\\pdfs\\kaggle_092_35REBWQXW3JLUKC6DAANAQ2P3RI5B6A6.pdf",
+    "gt_file": "kaggle_007_kaggle_092_35REBWQXW3JLUKC6DAANAQ2P3RI5B6A6.json",
+    "stem": "kaggle_007_kaggle_092_35REBWQXW3JLUKC6DAANAQ2P3RI5B6A6",
+    "toc_entries": 12
+  },
+  {
+    "pdf_path": "C:\\Users\\TITAN\\Desktop\\PDF_EXTRACTOR\\ml\\kaggle_data\\pdfs\\kaggle_092_35REBWQXW3JLUKC6DAANAQ2P3RI5B6A6.pdf",
+    "gt_file": "kaggle_008_kaggle_092_35REBWQXW3JLUKC6DAANAQ2P3RI5B6A6.json",
+    "stem": "kaggle_008_kaggle_092_35REBWQXW3JLUKC6DAANAQ2P3RI5B6A6",
+    "toc_entries": 12
+  },
+  {
+    "pdf_path": "C:\\Users\\TITAN\\Desktop\\PDF_EXTRACTOR\\ml\\kaggle_data\\pdfs\\kaggle_171_4ANUUHOJ7LTWU4PYON2VXJMPPUGDYWPD.pdf",
+    "gt_file": "kaggle_009_kaggle_171_4ANUUHOJ7LTWU4PYON2VXJMPPUGDYWPD.json",
+    "stem": "kaggle_009_kaggle_171_4ANUUHOJ7LTWU4PYON2VXJMPPUGDYWPD",
+    "toc_entries": 4
+  },
+  {
+    "pdf_path": "C:\\Users\\TITAN\\Desktop\\PDF_EXTRACTOR\\ml\\kaggle_data\\pdfs\\kaggle_171_4ANUUHOJ7LTWU4PYON2VXJMPPUGDYWPD.pdf",
+    "gt_file": "kaggle_010_kaggle_171_4ANUUHOJ7LTWU4PYON2VXJMPPUGDYWPD.json",
+    "stem": "kaggle_010_kaggle_171_4ANUUHOJ7LTWU4PYON2VXJMPPUGDYWPD",
+    "toc_entries": 4
+  },
+  {
+    "pdf_path": "C:\\Users\\TITAN\\Desktop\\PDF_EXTRACTOR\\ml\\kaggle_data\\pdfs\\kaggle_172_4ANUUHOJ7LTWU4PYON2VXJMPPUGDYWPD.pdf",
+    "gt_file": "kaggle_011_kaggle_172_4ANUUHOJ7LTWU4PYON2VXJMPPUGDYWPD.json",
+    "stem": "kaggle_011_kaggle_172_4ANUUHOJ7LTWU4PYON2VXJMPPUGDYWPD",
+    "toc_entries": 4
+  },
+  {
+    "pdf_path": "C:\\Users\\TITAN\\Desktop\\PDF_EXTRACTOR\\ml\\kaggle_data\\pdfs\\kaggle_172_4ANUUHOJ7LTWU4PYON2VXJMPPUGDYWPD.pdf",
+    "gt_file": "kaggle_012_kaggle_172_4ANUUHOJ7LTWU4PYON2VXJMPPUGDYWPD.json",
+    "stem": "kaggle_012_kaggle_172_4ANUUHOJ7LTWU4PYON2VXJMPPUGDYWPD",
+    "toc_entries": 4
+  },
+  {
+    "pdf_path": "C:\\Users\\TITAN\\Desktop\\PDF_EXTRACTOR\\ml\\kaggle_data\\pdfs\\kaggle_209_4WDM523HPSRSKBCVFVEJGLJ43DYOQRKO.pdf",
+    "gt_file": "kaggle_013_kaggle_209_4WDM523HPSRSKBCVFVEJGLJ43DYOQRKO.json",
+    "stem": "kaggle_013_kaggle_209_4WDM523HPSRSKBCVFVEJGLJ43DYOQRKO",
+    "toc_entries": 6
+  },
+  {
+    "pdf_path": "C:\\Users\\TITAN\\Desktop\\PDF_EXTRACTOR\\ml\\kaggle_data\\pdfs\\kaggle_209_4WDM523HPSRSKBCVFVEJGLJ43DYOQRKO.pdf",
+    "gt_file": "kaggle_014_kaggle_209_4WDM523HPSRSKBCVFVEJGLJ43DYOQRKO.json",
+    "stem": "kaggle_014_kaggle_209_4WDM523HPSRSKBCVFVEJGLJ43DYOQRKO",
+    "toc_entries": 6
+  },
+  {
+    "pdf_path": "C:\\Users\\TITAN\\Desktop\\PDF_EXTRACTOR\\ml\\kaggle_data\\pdfs\\kaggle_210_4WDM523HPSRSKBCVFVEJGLJ43DYOQRKO.pdf",
+    "gt_file": "kaggle_015_kaggle_210_4WDM523HPSRSKBCVFVEJGLJ43DYOQRKO.json",
+    "stem": "kaggle_015_kaggle_210_4WDM523HPSRSKBCVFVEJGLJ43DYOQRKO",
+    "toc_entries": 6
+  },
+  {
+    "pdf_path": "C:\\Users\\TITAN\\Desktop\\PDF_EXTRACTOR\\ml\\kaggle_data\\pdfs\\kaggle_210_4WDM523HPSRSKBCVFVEJGLJ43DYOQRKO.pdf",
+    "gt_file": "kaggle_016_kaggle_210_4WDM523HPSRSKBCVFVEJGLJ43DYOQRKO.json",
+    "stem": "kaggle_016_kaggle_210_4WDM523HPSRSKBCVFVEJGLJ43DYOQRKO",
+    "toc_entries": 6
+  }
+]

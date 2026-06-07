@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DocIntel — Document Intelligence</title>
+  <meta name="description" content="Structured heading extraction for professional document intelligence." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Minimalist fonts: Inter for UI, JetBrains Mono for data -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon" aria-hidden="true">⬛</span>
+        <span class="logo-text">DocIntel</span>
+      </div>
+      <nav class="header-nav">
+        <a href="/docs" target="_blank" rel="noopener">API Docs</a>
+        <a href="https://github.com/Harshitaaaaaaaaaa/Adobe-hackathon-1A" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main id="main-container">
+    
+    <!-- Left Pane: Controls and Results -->
+    <div class="left-pane" id="left-pane">
+      
+      <!-- Hero -->
+      <section class="hero" id="hero-section">
+        <h1 class="hero-title">Document Structure Extraction</h1>
+        <p class="hero-subtitle">
+          Upload a PDF to instantly extract its heading hierarchy, confidence scores, and bounding boxes.
+        </p>
+      </section>
+
+      <!-- Upload Card -->
+      <section class="upload-section" aria-label="PDF Upload">
+        <div class="card upload-card" id="upload-card">
+          <!-- Drop Zone -->
+          <div
+            class="drop-zone"
+            id="drop-zone"
+            role="button"
+            tabindex="0"
+            aria-label="Drop a PDF file here or click to browse"
+          >
+            <div class="drop-zone-icon" id="drop-icon" aria-hidden="true">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M14 28v4c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-4" stroke-linecap="round"/>
+                <path d="M24 14v16M24 14l-5 5M24 14l5 5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <p class="drop-zone-title">Drop PDF document</p>
+            <p class="drop-zone-sub">or <span class="link-text">browse files</span></p>
+            <input type="file" id="file-input" accept=".pdf" aria-label="Choose PDF file" />
+          </div>
+
+          <!-- Controls -->
+          <div class="controls-row">
+            <div class="control-group">
+              <label for="lang-select" class="control-label">Language</label>
+              <select id="lang-select" class="control-select">
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+                <option value="ja">Japanese</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label for="confidence-range" class="control-label">
+                Threshold: <span id="confidence-value">0.45</span>
+              </label>
+              <input
+                type="range"
+                id="confidence-range"
+                min="0" max="1" step="0.05" value="0.45"
+              />
+            </div>
+            <button class="btn btn-primary" id="extract-btn" disabled>
+              Extract
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Processing State -->
+      <div class="processing-state" id="processing-state" aria-live="polite" hidden>
+        <div class="spinner" aria-label="Processing..."></div>
+        <p class="processing-label" id="processing-label">Processing document…</p>
+      </div>
+
+      <!-- Results -->
+      <section class="results-section" id="results-section" hidden aria-label="Extraction results">
+        <!-- Stats Bar -->
+        <div class="stats-bar" id="stats-bar">
+          <div class="stat-chip" id="stat-title"><span id="stat-title-text">—</span></div>
+          <div class="stat-chip"><span id="stat-pages">—</span> pages</div>
+          <div class="stat-chip"><span id="stat-headings">—</span> headings</div>
+          <div class="stat-chip"><span id="stat-time">—</span> ms</div>
+          <div class="stat-chip stat-scanned" id="stat-scanned" hidden>Scanned PDF</div>
+        </div>
+
+        <!-- Heading Tree -->
+        <div class="card outline-card">
+          <div class="outline-header">
+            <h3 class="outline-heading">Extracted Outline</h3>
+            <div class="outline-actions">
+              <button class="btn btn-ghost" id="copy-btn">Copy JSON</button>
+              <button class="btn btn-ghost" id="download-btn">Download</button>
+            </div>
+          </div>
+          <div class="outline-tree" id="outline-tree" role="tree">
+            <!-- populated by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Error State -->
+      <div class="error-state" id="error-state" hidden role="alert">
+        <p class="error-title">Extraction Failed</p>
+        <p class="error-detail" id="error-detail">—</p>
+        <button class="btn btn-ghost" id="error-retry-btn">Try Again</button>
+      </div>
+
+    </div>
+
+    <!-- Right Pane: PDF Viewer -->
+    <div class="right-pane" id="right-pane" hidden>
+      <div class="pdf-viewer-header">
+        <div class="viewer-title-group">
+          <span class="viewer-title">Document Viewer</span>
+          <span class="viewer-hint">Click a heading to jump & highlight</span>
+        </div>
+        <div class="viewer-controls" id="viewer-controls" hidden>
+          <button class="btn btn-ghost btn-icon" id="btn-prev-page" title="Previous Page">▲</button>
+          <span class="page-info">Page <span id="page-num">1</span> / <span id="page-count">--</span></span>
+          <button class="btn btn-ghost btn-icon" id="btn-next-page" title="Next Page">▼</button>
+        </div>
+      </div>
+      <div id="pdf-viewer-container" class="pdf-viewer-container">
+        <canvas id="pdf-canvas"></canvas>
+        <div id="pdf-highlight-layer" class="pdf-highlight-layer"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Toast Notifications -->
+  <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- PDF.js library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    // Set the workerSrc for PDF.js
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  </script>
+
+  <script src="app.js"></script>
+</body>
+</html>

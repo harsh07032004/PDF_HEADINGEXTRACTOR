@@ -1,0 +1,100 @@
+{
+  "title": "Environmental Impact Assessment",
+  "outline": [
+    {
+      "level": "H1",
+      "text": "1 Project Description",
+      "page": 1
+    },
+    {
+      "level": "H2",
+      "text": "1.1 Site Location",
+      "page": 1
+    },
+    {
+      "level": "H2",
+      "text": "1.2 Project Scope",
+      "page": 1
+    },
+    {
+      "level": "H1",
+      "text": "2 Environmental Baseline",
+      "page": 1
+    },
+    {
+      "level": "H2",
+      "text": "2.1 Air Quality",
+      "page": 1
+    },
+    {
+      "level": "H2",
+      "text": "2.2 Water Resources",
+      "page": 2
+    },
+    {
+      "level": "H3",
+      "text": "2.2.1 Surface Water",
+      "page": 2
+    },
+    {
+      "level": "H3",
+      "text": "2.2.2 Groundwater",
+      "page": 2
+    },
+    {
+      "level": "H2",
+      "text": "2.3 Ecology",
+      "page": 2
+    },
+    {
+      "level": "H3",
+      "text": "2.3.1 Flora",
+      "page": 2
+    },
+    {
+      "level": "H3",
+      "text": "2.3.2 Fauna",
+      "page": 2
+    },
+    {
+      "level": "H1",
+      "text": "3 Impact Assessment",
+      "page": 3
+    },
+    {
+      "level": "H2",
+      "text": "3.1 Construction Phase",
+      "page": 3
+    },
+    {
+      "level": "H2",
+      "text": "3.2 Operational Phase",
+      "page": 3
+    },
+    {
+      "level": "H1",
+      "text": "4 Mitigation Measures",
+      "page": 3
+    },
+    {
+      "level": "H2",
+      "text": "4.1 Air Quality Measures",
+      "page": 4
+    },
+    {
+      "level": "H2",
+      "text": "4.2 Water Protection",
+      "page": 4
+    },
+    {
+      "level": "H1",
+      "text": "5 Monitoring Plan",
+      "page": 4
+    },
+    {
+      "level": "H1",
+      "text": "6 Conclusions",
+      "page": 4
+    }
+  ]
+}
