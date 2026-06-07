@@ -28,7 +28,7 @@ const state = {
   pageRendering: false,
   pageNumPending: null,
   highlightPending: null, // bounding box array [x0, y0, x1, y1]
-  pdfScale: 1.5,
+  pdfScale: 1.0, // Reduced from 1.5 for better visibility
 };
 
 // ── DOM References ────────────────────────────────────────────────────────────
