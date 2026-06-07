@@ -1,6 +1,6 @@
 # 📄 PDF Heading Extractor
 
-> A **production-grade, multilingual PDF document-structure extraction pipeline** built with PyMuPDF, FastAPI, and a confidence-scoring engine. Exposes a REST API, ships with a drag-and-drop Web UI, and includes a full evaluation harness for measurable precision/recall benchmarking.
+> A **production-grade, multilingual PDF document-structure extraction pipeline** built with PyMuPDF, FastAPI, and a confidence-scoring engine. Exposes a REST API, includes a standalone Web UI, and features a full evaluation harness for measurable precision/recall benchmarking.
 
 [![CI](https://github.com/harsh07032004/PDF_HEADINGEXTRACTOR/actions/workflows/ci.yml/badge.svg)](https://github.com/harsh07032004/PDF_HEADINGEXTRACTOR/actions)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
@@ -18,7 +18,7 @@
 | **Confidence scoring** | Every heading gets a `0.0–1.0` confidence score from 6 weighted signals |
 | **Multilingual** | English, Spanish, French, German, Japanese regex patterns |
 | **REST API** | FastAPI with `/extract`, `/extract/batch`, `/health`, `/languages` |
-| **Web UI** | Drag-and-drop interface with live tree view + JSON download |
+| **Web UI** | Standalone decoupled frontend for drag-and-drop extraction |
 | **Evaluation harness** | Precision / Recall / F1 per heading level against ground truth |
 | **Docker ready** | Multi-stage build, non-root user, health check |
 | **CI/CD** | GitHub Actions: lint → test (3× Python matrix) → Docker smoke test |
@@ -64,7 +64,7 @@
 ├── api/                     # FastAPI application
 │   ├── main.py              # Routes + middleware
 │   └── schemas.py           # Pydantic HTTP models
-├── web/                     # Web UI (no framework, vanilla JS)
+├── frontend/                # Standalone Web UI (vanilla HTML/JS/CSS)
 │   ├── index.html
 │   ├── style.css
 │   └── app.js
@@ -110,8 +110,8 @@ pip install -e .
 uvicorn api.main:app --reload --port 8000
 ```
 
-Open **http://localhost:8000/docs** for the interactive Swagger UI.  
-Open **http://localhost:8000/ui** for the drag-and-drop Web UI.
+Open **http://localhost:8000/docs** for the interactive Swagger UI.
+To use the Web UI, simply open `frontend/index.html` in your web browser.
 
 ### 3. CLI Usage
 
@@ -285,32 +285,20 @@ mypy extractor/ api/
 
 ---
 
-## 🌐 Deployment
+## 🌐 Deployment (Decoupled Architecture)
 
-### Render (Recommended for free hosting)
+This project separates the Backend (FastAPI) and Frontend (Vanilla JS) for optimal hosting.
 
-1. Connect your GitHub repo to [Render](https://render.com)
-2. New → Web Service → Choose repo
-3. Build command: `pip install -r requirements.txt`
-4. Start command: `uvicorn api.main:app --host 0.0.0.0 --port $PORT`
-5. Your live URL: `https://your-app.onrender.com`
+### 1. Deploy the Backend API (Render)
+1. Connect your GitHub repo to [Render](https://render.com) and create a **Web Service**.
+2. Render will automatically detect the `Dockerfile` and build the Python API.
+3. Once deployed, copy your API URL (e.g., `https://pdf-extractor.onrender.com`).
 
-### Railway
-
-```bash
-railway init
-railway up
-```
-
-### AWS EC2
-
-```bash
-# On EC2 instance (Amazon Linux 2)
-git clone https://github.com/harsh07032004/PDF_HEADINGEXTRACTOR.git
-cd PDF_HEADINGEXTRACTOR
-pip install -r requirements.txt
-uvicorn api.main:app --host 0.0.0.0 --port 8000 --workers 2
-```
+### 2. Deploy the Frontend UI (Vercel)
+1. In your `frontend/app.js`, update the `API_BASE` variable to your new Render backend URL.
+2. Go to [Vercel](https://vercel.com) and import your GitHub repository.
+3. Set the **Root Directory** to `frontend`.
+4. Deploy! Your static frontend will now securely communicate with your heavy ML backend.
 
 ---
 
