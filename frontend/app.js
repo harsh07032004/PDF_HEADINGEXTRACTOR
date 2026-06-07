@@ -14,9 +14,7 @@
 // When deploying the frontend separately (e.g. Vercel/Netlify), 
 // change this to your deployed backend URL:
 // const API_BASE = "https://your-backend-app.onrender.com";
-const API_BASE = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-  ? "http://localhost:8000"
-  : window.location.origin; // Fallback to same origin if hosted together
+const API_BASE = "https://pdf-to-json-extractor.onrender.com"; // Your live Render URL
 
 // ── State ─────────────────────────────────────────────────────────────────────
 
