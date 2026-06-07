@@ -48,7 +48,6 @@ WORKDIR /app
 # Copy application source
 COPY extractor/   ./extractor/
 COPY api/         ./api/
-COPY web/         ./web/
 COPY languages.json .
 COPY process_pdfs.py .
 

@@ -96,10 +96,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Serve the Web UI from /web if the directory exists
-_web_dir = Path(__file__).parent.parent / "web"
-if _web_dir.is_dir():
-    app.mount("/ui", StaticFiles(directory=str(_web_dir), html=True), name="web")
+# The frontend is now completely separated and hosted independently.
 
 
 # ── Helper: convert engine output → API response ───────────────────────────────
