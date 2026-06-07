@@ -21,6 +21,7 @@ import json
 import logging
 import tempfile
 import time
+import os
 from pathlib import Path
 
 from fastapi import (
@@ -82,9 +83,14 @@ app = FastAPI(
 )
 
 # CORS — allow all origins for local development; restrict in production
+# To secure this, set the ALLOWED_ORIGINS environment variable in Render.
+# Example: ALLOWED_ORIGINS="https://your-frontend.vercel.app,http://localhost:3000"
+allowed_origins_env = os.environ.get("ALLOWED_ORIGINS", "*")
+allowed_origins = [origin.strip() for origin in allowed_origins_env.split(",")] if allowed_origins_env != "*" else ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     allow_credentials=False,
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
