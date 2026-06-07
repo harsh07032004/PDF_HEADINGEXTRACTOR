@@ -76,7 +76,7 @@ app = FastAPI(
     version=API_VERSION,
     contact={
         "name": "GitHub Repository",
-        "url": "https://github.com/Harshitaaaaaaaaaa/Adobe-hackathon-1A",
+        "url": "https://github.com/harsh07032004/PDF_HEADINGEXTRACTOR",
     },
     license_info={"name": "MIT"},
 )

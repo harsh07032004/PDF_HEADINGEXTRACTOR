@@ -26,7 +26,7 @@ RUN python -m venv /opt/venv && \
 # ──────────────────────────────────────────────────────────────────────────────
 FROM python:3.11-slim AS runtime
 
-LABEL maintainer="Harshita"
+LABEL maintainer="Harsh"
 LABEL description="Production-grade multilingual PDF heading extractor API"
 LABEL version="0.1.0"
 
