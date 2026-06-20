@@ -24,7 +24,6 @@ as a standalone library, as a CLI tool, and as a backend service equally.
 
 from __future__ import annotations
 
-import json
 import re
 import time
 from collections import Counter
@@ -51,9 +50,6 @@ _CONFIDENCE_THRESHOLD: float = 0.20
 
 # Number (top) heading levels to retain from font-size clustering
 _MAX_HEADING_LEVELS: int = 4
-
-# Path to the language patterns file, resolved relative to this module
-_LANGUAGES_FILE: Path = Path(__file__).parent.parent / "languages.json"
 
 # Regex for detecting numbered section labels like "1.", "1.2", "1.2.3"
 _NUMBER_PREFIX_RE = re.compile(r"^\d+(\.\d+)*[\.\s]")
@@ -129,14 +125,11 @@ class ExtractorEngine:
     def __init__(
         self,
         file_path: str | Path,
-        lang: str = "en",
         use_ml: bool = False,
     ) -> None:
         self.file_path = Path(file_path)
-        self.lang = lang
         self.use_ml = use_ml
         self._doc: fitz.Document = fitz.open(str(self.file_path))
-        self._lang_patterns: list[re.Pattern[str]] = self._load_lang_patterns(lang)
 
         # Load ML classifier if requested
         self._ml_classifier = None
@@ -189,7 +182,7 @@ class ExtractorEngine:
         if not body_blocks:
             elapsed = (time.perf_counter() - start_ts) * 1000
             meta = ExtractionMetadata(
-                language=self.lang,
+                language="en",
                 toc_available=toc_available,
                 total_spans_processed=total_spans,
                 scanned_pdf_detected=scanned,
@@ -218,7 +211,7 @@ class ExtractorEngine:
 
         elapsed = (time.perf_counter() - start_ts) * 1000
         meta = ExtractionMetadata(
-            language=self.lang,
+            language="en",
             toc_available=toc_available,
             total_spans_processed=total_spans,
             scanned_pdf_detected=scanned,
@@ -404,6 +397,9 @@ class ExtractorEngine:
             1. Color: drop light-gray text (RGB channels all > 200).
             2. Frequency: drop text that appears on > 80% of pages at the
                same rounded font size (classic watermark / page-number pattern).
+               GUARD: only applied when the document has >= 3 pages — on 1- or
+               2-page documents every block appears on 100% of pages, so this
+               filter would incorrectly delete all content.
             3. Spatial + density: drop blocks whose y0 ratio puts them in the
                center band of the page (25%–75%) AND whose character-to-area
                density is very low (large font, few chars) — the NPTEL
@@ -417,18 +413,22 @@ class ExtractorEngine:
         blocks = [b for b in blocks if not b.is_light_gray]
 
         # ---------- Filter 2: Document-wide frequency ----------
-        # Hash (normalised_text, rounded_font_size) → set of pages it appears on
-        freq: dict[tuple[str, int], set[int]] = {}
-        for b in blocks:
-            key = (b.text.strip().lower(), round(b.font_size))
-            freq.setdefault(key, set()).add(b.page)
+        # Only meaningful when there are enough pages to distinguish
+        # repeated boilerplate (headers/footers) from actual content.
+        # On 1- or 2-page documents every block trivially appears on
+        # ≥ 50–100% of pages, so the filter must be skipped entirely.
+        if total_pages >= 3:
+            freq: dict[tuple[str, int], set[int]] = {}
+            for b in blocks:
+                key = (b.text.strip().lower(), round(b.font_size))
+                freq.setdefault(key, set()).add(b.page)
 
-        boilerplate_keys: set[tuple[str, int]] = {
-            k for k, pages in freq.items()
-            if total_pages > 0 and len(pages) / total_pages > 0.80
-        }
-        blocks = [b for b in blocks if
-                  (b.text.strip().lower(), round(b.font_size)) not in boilerplate_keys]
+            boilerplate_keys: set[tuple[str, int]] = {
+                k for k, pages in freq.items()
+                if len(pages) / total_pages > 0.80
+            }
+            blocks = [b for b in blocks if
+                      (b.text.strip().lower(), round(b.font_size)) not in boilerplate_keys]
 
         # ---------- Filter 3: Spatial density (watermark geometry) ----------
         def _char_area_density(b: _TextBlock) -> float:
@@ -829,12 +829,6 @@ class ExtractorEngine:
         if features.bold_percentage >= 0.80 and features.word_count <= 15:
             score += 0.10  # strong heading-specific boldness bonus
 
-        # Language pattern match
-        for pattern in self._lang_patterns:
-            if pattern.match(block.text):
-                score += 0.10
-                break
-
         # Numbered section (e.g., "2.3 Background")
         if features.starts_with_number:
             score += 0.05
@@ -904,11 +898,6 @@ class ExtractorEngine:
         ):
             return "H3"
 
-        # Fallback: language regex match
-        for pattern in self._lang_patterns:
-            if pattern.match(block.text):
-                return "H2"
-
         return None
 
     # ── Step 9: Deduplication ──────────────────────────────────────────────────
@@ -955,38 +944,29 @@ class ExtractorEngine:
         Normalise extracted text by collapsing whitespace and removing
         artefacts caused by repeated character rendering in some PDFs.
 
-        Example artefact: "IInnttrroodduuccttiioonn" → "Introduction"
-        """
-        # Collapse consecutive duplicate characters that are alphanumeric
-        chars = list(text)
-        result: list[str] = []
-        prev = ""
-        for c in chars:
-            if c != prev or not c.isalnum():
-                result.append(c)
-            prev = c
-        cleaned = "".join(result)
-        # Normalise whitespace
-        return " ".join(cleaned.split())
+        Some PDFs render each glyph twice, producing strings where EVERY
+        alphanumeric character is doubled:
+            "IInnttrroodduuccttiioonn" → "Introduction"
 
-    @staticmethod
-    def _load_lang_patterns(lang: str) -> list[re.Pattern[str]]:
+        We only apply the de-doubling when the text matches this very
+        specific whole-string pattern (every alpha char appears twice in
+        a row), to avoid mangling normal English double letters like
+        "ll", "ss", "pp", "tt" in words such as "Syllabus" or "Business".
         """
-        Load heading regex patterns for the given language from
-        ``languages.json``.  Falls back to English on any error.
-        """
-        try:
-            with open(_LANGUAGES_FILE, encoding="utf-8") as fh:
-                lang_data: dict[str, Any] = json.load(fh)
-            raw_patterns: list[str] = (
-                lang_data.get(lang, {}).get("heading_patterns", [])
-                or lang_data.get("en", {}).get("heading_patterns", [])
+        # Detect whole-string doubled-char artifact:
+        # strip spaces, then check if every alphanumeric char is paired.
+        stripped = text.replace(" ", "")
+        if len(stripped) >= 4 and len(stripped) % 2 == 0:
+            # Check if every pair of consecutive chars is identical
+            is_doubled = all(
+                stripped[i] == stripped[i + 1]
+                for i in range(0, len(stripped) - 1, 2)
             )
-            return [re.compile(p, re.IGNORECASE) for p in raw_patterns]
-        except Exception as exc:
-            import warnings
-            warnings.warn(
-                f"Could not load language patterns for '{lang}': {exc}",
-                stacklevel=2,
-            )
-            return []
+            if is_doubled:
+                # Un-double: take every other character
+                text = stripped[::2]
+
+        # Normalise whitespace
+        return " ".join(text.split())
+
+
