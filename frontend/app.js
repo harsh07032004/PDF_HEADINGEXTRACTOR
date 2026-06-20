@@ -13,8 +13,7 @@
 
 // When deploying the frontend separately (e.g. Vercel/Netlify), 
 // change this to your deployed backend URL:
-// const API_BASE = "https://your-backend-app.onrender.com";
-const API_BASE = "https://pdf-to-json-extractor.onrender.com"; // Your live Render URL
+const API_BASE = "https://pdf-headingextractor.onrender.com"; // Your live Render URL
 
 // ── State ─────────────────────────────────────────────────────────────────────
 
