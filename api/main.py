@@ -23,7 +23,6 @@ from pathlib import Path
 from fastapi import FastAPI, File, HTTPException, Query, UploadFile, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from fastapi.staticfiles import StaticFiles
 
 from api.schemas import (
     BoundingBoxResponse,
@@ -216,11 +215,6 @@ async def extract(
         ) from exc
     finally:
         tmp_path.unlink(missing_ok=True)
-
-
-# ── Static Frontend ────────────────────────────────────────────────────────────
-
-app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
 
 
 # ── Global exception handlers ──────────────────────────────────────────────────
