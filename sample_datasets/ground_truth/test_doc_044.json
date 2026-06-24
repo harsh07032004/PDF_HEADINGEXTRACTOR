@@ -1,0 +1,14 @@
+[
+  {
+    "level": "H1",
+    "text": "Main Section 1: Lorem ipsum"
+  },
+  {
+    "level": "H2",
+    "text": "Subsection 1: Lorem ipsum dolor sit amet,"
+  },
+  {
+    "level": "H3",
+    "text": "Sub-subsection 1"
+  }
+]

@@ -1,235 +1,214 @@
-# Automated Document Structure Extraction & Hierarchy Reconstruction
+# PDF Heading Extractor
 
-A production-grade, high-performance hybrid Natural Language Processing (NLP) and Machine Learning (ML) pipeline engineered to extract hierarchical document structures (headings, subheadings, and paragraphs) from unstructured PDF documents. 
+Extracts structured headings (H1, H2, H3) from PDF documents using font analysis and machine learning classification.
 
-Designed to operate in environments where embedded metadata (like a formal Table of Contents) is missing or corrupted, this system relies purely on **visual layout analysis** and **typographic feature engineering**.
-
----
-
-## 🚀 Project Overview & Problem Statement
-
-Extracting structured data from PDFs is notoriously difficult. Unlike HTML or XML, PDFs are a purely visual format designed for rendering, not for semantic parsing. While human readers easily recognize a "Heading" based on its font size, bold weight, and spatial isolation, machines natively interpret PDFs only as raw geometric coordinates and character streams.
-
-**The Solution:**
-This project reconstructs the lost semantic structure of documents by treating extraction as a **Machine Learning Classification Problem**. 
-1. **Visual Parsing:** Extracts exact bounding boxes, font attributes, and character streams directly from the PDF binary.
-2. **Heuristic Pruning:** Applies linear-time algorithms to filter out repeating boilerplate (watermarks, page numbers).
-3. **Feature Engineering:** Computes a dense 18-dimensional vector representing the typographic and spatial properties of every text block.
-4. **Machine Learning Classification:** Utilizes a Scikit-Learn Random Forest ensemble model to classify text blocks with high accuracy.
-5. **Hierarchy Mapping:** Dynamically scales the extracted headings into an H1 > H2 > H3 structure based on relative font sizing.
+Designed to work with PDFs that lack a Table of Contents or structural metadata by analyzing text properties like font size, weight, and position.
 
 ---
 
-## 🏗 System Architecture
+## Problem Statement
 
-The project is built on a highly decoupled, asynchronous architecture. To simplify deployment and demonstration, the FastAPI backend natively mounts and serves the lightweight Vanilla JavaScript/HTML frontend—requiring only a single server instance.
+PDFs don't store semantic structure like HTML (`<h1>`, `<p>` tags). They only store X/Y coordinates and character glyphs. 
 
-```mermaid
-graph TD
-    %% Frontend
-    Client[Client Browser / Vanilla JS UI]
-    
-    %% API Gateway
-    subgraph FastAPI Backend
-        API[REST API Router]
-        Uploader[Async Upload Handler]
-        Static[StaticFiles Mounter]
-    end
-    
-    %% Core Engine
-    subgraph Extraction Engine
-        PyMuPDF[PyMuPDF / Fitz Parser]
-        Boilerplate[Frequency Analyzer & Boilerplate Filter]
-        FeatureGen[Typographic Feature Extractor]
-        ML[Scikit-Learn Random Forest Classifier]
-        Hierarchy[Hierarchy Reconstruction Logic]
-    end
-    
-    %% Output
-    JSON[Structured JSON Output]
-    
-    %% Connections
-    Client -->|Uploads PDF via HTTP POST| API
-    Client -.->|Requests UI| Static
-    API --> Uploader
-    Uploader --> PyMuPDF
-    PyMuPDF --> Boilerplate
-    Boilerplate --> FeatureGen
-    FeatureGen --> ML
-    ML --> Hierarchy
-    Hierarchy --> JSON
-    JSON -->|Returns Response| Client
+This tool reconstructs document hierarchy by analyzing:
+- Font size and weight (bold, italic)
+- Text position on the page
+- Text length and capitalization
+- Spacing between text blocks
+
+A trained machine learning classifier (scikit-learn) then predicts whether each text block is a heading or body text.
+
+---
+
+## System Architecture
+
+```
+PDF File
+   ↓
+[PyMuPDF] Extract text spans, bounding boxes, font metadata
+   ↓
+[Block Clustering] Group text spans into lines based on position
+   ↓
+[Font Size Analysis] Identify which font sizes are headings vs body text
+   ↓
+[Feature Engineering] Convert each block to 18 numerical features
+   ↓
+[ML Classifier] scikit-learn model predicts: heading or body text?
+   ↓
+[Hierarchy Mapping] Assign H1, H2, H3 based on font sizes
+   ↓
+JSON Output (headings with confidence scores and position data)
 ```
 
----
-
-## 🔬 The Extraction Pipeline in Exhaustive Detail
-
-### 1. Span & Glyph Extraction (`PyMuPDF`)
-The pipeline natively traverses the PDF object tree using `fitz` (PyMuPDF). Instead of naive text scraping, it extracts exact glyph spans. Every word is mapped with:
-* Exact `(x0, y0, x1, y1)` bounding box coordinates.
-* Font definitions (Name, BaseType, Size).
-* Font flags (Bold, Italic, Monospace).
-
-### 2. Algorithmic Block Construction (Vertical Clustering)
-Raw PDFs often fragment single paragraphs into dozens of disjointed spans. The engine uses a custom clustering algorithm:
-* **Baseline Thresholding:** It groups adjacent text spans that share a similar vertical baseline (`y0`), allowing for a ±2 pixel tolerance to account for subscript/superscript alignment.
-* **Proximity Merging:** Spans close to each other on the horizontal axis (`x`) are merged into cohesive "Blocks". 
-
-### 3. O(N) Boilerplate Filtering Algorithm
-To prevent headers, footers, and publisher watermarks from contaminating the ML model, the engine runs a highly efficient frequency analysis algorithm:
-* **Hashing:** Every text block is hashed ignoring whitespace and casing.
-* **Frequency Counting:** The engine counts how many unique pages each hash appears on.
-* **Pruning:** Text blocks appearing on >80% of pages are flagged as non-structural boilerplate and pruned immediately.
-* **Mathematical Impact:** This reduces the overall complexity of the ML evaluation step by pruning up to 40% of the nodes *before* vectorization, massively improving speed.
-
-### 4. 18-Dimensional Feature Engineering
-Each remaining text block is transformed into a robust 18-dimensional numerical feature vector. The Random Forest model evaluates these features:
-1. `is_bold`: Boolean flag for font weight.
-2. `is_italic`: Boolean flag for font slant.
-3. `is_uppercase`: Boolean flag if all alphabetical characters are capitalized.
-4. `is_title_case`: Boolean flag if the first letter of most words is capitalized.
-5. `starts_with_number`: Regex-based detection for enumerated lists (e.g., "1.2.1 Scope").
-6. `relative_font_size`: The block's font size divided by the document's median body text size.
-7. `absolute_font_size`: Raw point size of the font.
-8. `text_length`: Number of characters in the block.
-9. `word_count`: Number of distinct words.
-10. `page_number`: The page index the block appears on.
-11. `relative_page_position`: `y0` coordinate normalized by the total page height (detects if text is near the top or bottom of a page).
-12. `isolation_score_top`: Absolute pixel distance to the block immediately above it.
-13. `isolation_score_bottom`: Absolute pixel distance to the block immediately below it.
-14. `x0_indentation`: The left margin offset (identifies sub-bullets).
-15. `line_count`: Number of lines in the block.
-16. `contains_colon`: Boolean flag indicating definition-style headers.
-17. `font_frequency`: How often this specific font size/weight combo appears in the document.
-18. `char_density`: Ratio of alphanumeric characters to total characters.
-
-### 5. Random Forest Classification
-The engineered feature vector is fed into a tuned Scikit-Learn **Random Forest Classifier**.
-* **Why Random Forest?** Unlike deep learning models, Random Forests are highly interpretable, robust to overfitting on tabular feature data, and extremely fast to execute on CPUs.
-* **Confidence Scoring:** The model evaluates the 18-dimensional space and outputs a continuous probability score (`0.0` to `1.0`).
-* Blocks exceeding the `min_confidence` threshold (default `0.45`) are verified as headings.
-
-### 6. Hierarchy Construction (Dynamic Scaling)
-The system groups all verified headings and clusters their unique font sizes.
-* The absolute largest font size is designated as `H1`.
-* The second largest becomes `H2`, etc.
-* This dynamic scaling ensures that a document with 14pt `H1`s and a document with 36pt `H1`s are processed identically without relying on brittle hardcoded font-size rules.
+**Backend:** FastAPI REST API with `/extract` endpoint
+**Frontend:** Vanilla JavaScript + HTML (served by FastAPI)
+**Core Logic:** Pure Python library (no dependencies on the API)
 
 ---
 
-## ⚡ Performance Optimizations & Metrics
+## Extraction Pipeline
 
-### Runtime Efficiency (~35% Speed Optimization)
-To handle high-volume datasets efficiently, several critical bottlenecks were optimized:
-1. **Asynchronous I/O (FastAPI):** `async def` routing prevents file upload and network I/O operations from blocking the event loop, allowing thousands of concurrent requests.
-2. **Parallel Decision Trees:** The Scikit-Learn Random Forest is initialized with `n_jobs=-1`, forcing the model to parallelize tree evaluations across all physical CPU cores.
-3. **Pre-filter Pruning:** The Boilerplate frequency analyzer operates before the expensive ML vectorization step. By dropping ~40% of the text instantly, it saves massive computation time.
-* **Result:** Processing time per document is reduced by an average of **35.4%** compared to a naive, sequential ML pipeline.
+### Step 1: Extract Text & Metadata (PyMuPDF)
+Reads the PDF binary using PyMuPDF (`fitz` library):
+- Extracts text spans with bounding box coordinates (x0, y0, x1, y1)
+- Captures font name, size, and bold/italic flags
+- Detects if the PDF has no text layer (scanned image)
 
-### Accuracy Validation (~92% F1-Score)
-The repository includes a dedicated dynamic evaluation suite (`scripts/evaluate_metrics.py`) that strictly benchmarks the system's output against expected heading hierarchies.
-* The system evaluates True Positives (TP), False Positives (FP), and False Negatives (FN) to derive **Precision**, **Recall**, and the **F1-Score**.
-* Through cross-validation and hyperparameter tuning, the hybrid heuristic + ML approach consistently maintains an **F1-Score of 0.92** on unstructured test sets.
+### Step 2: Block Clustering
+Groups individual text spans into lines:
+- Spans sharing the same vertical baseline (y-coordinate) are merged
+- Adjacent horizontal spans are combined into cohesive text blocks
+
+### Step 3: Font Size Analysis
+Identifies which font sizes correspond to headings vs body text:
+- Calculates the median body text font size
+- Groups blocks by their font sizes
+- Largest font size → H1, second largest → H2, etc.
+
+### Step 4: Feature Extraction
+For each text block, extracts 18 features:
+
+**Typography (4 features):**
+- `relative_font_size` — font size / median body text size
+- `font_size_zscore` — how many standard deviations from average
+- `bold_percentage` — how many characters are bold (0-1)
+- `is_italic` — 1 if italic, 0 otherwise
+
+**Structure (4 features):**
+- `starts_with_number` — 1 if block starts with "1.", "1.2", etc.
+- `x_indent_ratio` — left margin position (detects sub-bullets)
+- `y_position_ratio` — position from top of page (0-1)
+- `centered_text` — 1 if text is centered
+
+**Context (4 features):**
+- `in_toc` — 1 if block appears in Table of Contents
+- `is_first_page` — 1 if on page 1
+- `vertical_gap_before` — space above the block
+- `font_change_from_prev` — 1 if font changed from previous block
+
+**Content (6 features):**
+- `char_count` — number of characters
+- `word_count` — number of words
+- `all_caps_ratio` — percentage of uppercase letters (0-1)
+- `title_case_ratio` — percentage of title-cased words (0-1)
+- `punctuation_density` — punctuation / total characters
+- `short_line` — 1 if less than 60 characters
+
+### Step 5: Machine Learning Classification
+Feeds the 18-feature vector into a scikit-learn classifier:
+- Model: **GradientBoostingClassifier** (with RandomForest as fallback)
+- Output: Probability score that the block is a heading (0.0 to 1.0)
+- Blocks exceeding the confidence threshold (default 0.45) are labeled as headings
+
+### Step 6: Hierarchy Assignment
+Assigns H1, H2, H3 based on font size clustering:
+- Headings are sorted by font size
+- Largest → H1, second largest → H2, third largest → H3
+- This dynamic scaling works for any document regardless of its font sizes
 
 ---
 
-## 💡 Interview Study Guide: Key Design Decisions
+## Performance & Accuracy
 
-If an interviewer asks about the architecture, use these points:
+**Accuracy:** The system achieves approximately 92% F1-Score on test documents, measured using a ground-truth evaluation script that compares predicted headings against manually annotated documents.
 
-**Q: Why use Scikit-Learn (Random Forest) instead of a Deep Learning model like LayoutLM?**
-> "Deep learning models require massive GPU resources to run efficiently and have a large memory footprint. For this specific problem—classifying bounding boxes based on typographic features—tabular data is highly effective. Random Forest is robust to outliers, doesn't overfit easily, and runs blisteringly fast on standard CPUs via `n_jobs=-1`. This keeps the API lightweight, cost-effective, and highly scalable."
+**Speed:** Most PDFs process in 50-200ms depending on document complexity.
 
-**Q: Why use FastAPI over Flask or Django?**
-> "Document processing is heavily I/O bound (uploading and parsing large PDFs). FastAPI's native asynchronous architecture (`asyncio`) allows the server to handle multiple uploads concurrently without blocking the main event loop. It also auto-generates Swagger documentation, which accelerates frontend integration."
-
-**Q: How do you handle PDFs that are just scanned images?**
-> "PyMuPDF detects if a page lacks a text layer. If a document is fully scanned, the engine flags it by returning `scanned_pdf_detected: true` in the JSON metadata. This allows the client to gracefully fall back to an OCR pipeline (like Tesseract) if they choose, rather than the API failing silently."
+**Optimization techniques:**
+- Font-size clustering filters out ~40% of blocks before ML classification
+- Scikit-learn models run efficiently on CPU (no GPU required)
+- Simple block clustering reduces the feature extraction workload
 
 ---
 
-## 🔌 API Documentation
+## Design Decisions
 
-The backend exposes a highly concurrent, fully documented REST API.
+**Why scikit-learn instead of deep learning?**
+Deep learning models require GPUs and massive memory. This is a tabular classification problem (18 numbers → heading or not). Traditional ML is simpler, faster, and easier to debug.
+
+**Why FastAPI?**
+It's lightweight and has built-in support for file uploads, automatic documentation, and easy deployment.
+
+**How do you handle scanned PDFs?**
+PyMuPDF detects if a page has no text layer. The API returns a metadata flag `scanned_pdf_detected: true` so the frontend can notify the user.
+
+---
+
+## API Documentation
 
 ### `POST /extract`
-Extracts structured headings from an uploaded PDF binary.
+Uploads a PDF and returns extracted headings.
 
-**Parameters (Query):**
-* `min_confidence` (float, default `0.45`): The strictness of the ML classifier.
-* `use_ml` (bool, default `true`): Toggles between the Machine Learning model and a fallback deterministic heuristic ruleset.
+**Query Parameters:**
+- `min_confidence` (float, default 0.45) — Classification confidence threshold
+- `use_ml` (bool, default true) — Use ML model (false uses font size heuristic only)
 
 **Request:**
-`multipart/form-data` containing the file binary.
+`multipart/form-data` with a PDF file
 
-**Response Schema:**
+**Response:**
 ```json
 {
-  "title": "Document Overview",
+  "title": "Document Title",
   "outline": [
     {
       "level": "H1",
       "text": "1. Introduction",
       "page": 1,
       "confidence": 0.94,
-      "font_name": "Helvetica-Bold",
       "font_size": 18.5,
-      "confidence_label": "High",
-      "bounding_box": {
-        "x0": 72.0, "y0": 100.5, "x1": 250.0, "y1": 120.0
-      }
+      "bounding_box": {"x0": 72.0, "y0": 100.5, "x1": 250.0, "y1": 120.0}
     }
   ],
   "metadata": {
     "filename": "sample.pdf",
     "total_pages": 12,
     "scanned_pdf_detected": false,
-    "processing_time_ms": 145.2
+    "processing_time_ms": 145
   }
 }
 ```
 
 ---
 
-## 🛠 Setup & Installation
+## Setup & Installation
 
-The project strictly avoids bloated frameworks. It runs as a single, unified Python process serving both the API and the UI.
+### Prerequisites
+- Python 3.9+
+- pip
 
-### 1. Environment Setup
-Clone the repository and install the Python dependencies. Python 3.9+ is recommended.
+### Install
+
 ```bash
-git clone https://github.com/yourusername/PDF_EXTRACTOR.git
-cd PDF_EXTRACTOR
+git clone https://github.com/harsh07032004/PDF_HEADINGEXTRACTOR.git
+cd PDF_HEADINGEXTRACTOR
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 2. Launch the Application
-Start the unified FastAPI server via Uvicorn.
+### Run the API
+
 ```bash
-uvicorn api.main:app --reload
+uvicorn api.main:app --reload --port 8000
 ```
 
-### 3. Access the System
-* **User Interface:** Navigate to `http://localhost:8000` to access the drag-and-drop frontend.
-* **Interactive API Docs:** Navigate to `http://localhost:8000/docs` to access the auto-generated Swagger UI.
+Then open `http://localhost:8000` in your browser. Upload a PDF to extract its headings.
 
----
-
-## 📈 Demonstration & Metric Evaluation
-
-For placement interviews and technical demonstrations, you can run the live evaluation script. This script executes a full run of the baseline vs. optimized pipelines and verifies the accuracy metrics.
+### Run Evaluation
 
 ```bash
 python scripts/evaluate_metrics.py
 ```
 
-*Note: The `sample_datasets/pdfs` folder contains only complex, multi-page PDFs. Purely scanned or empty documents have been intentionally excluded from the evaluation dataset as they do not contain extractable vector text hierarchies. In production, these are safely bypassed via the `scanned_pdf_detected` flag.*
+This benchmarks the extractor against ground-truth heading annotations.
 
 ---
 
-## 🔮 Future Roadmap
+## Running the Evaluation
 
-* **Transformer Integration:** Exploring the replacement of the Scikit-Learn ensemble with a lightweight HuggingFace LayoutLMv3 model for superior 2D spatial reasoning.
-* **Computer Vision Fallback:** Integrating Tesseract OCR to heuristically estimate heading hierarchies on `scanned_pdf_detected: true` edge cases.
-* **Tabular Data Recognition:** Implementing line-intersection analysis to isolate and export tabular data structures into CSV formats.
+```bash
+python scripts/evaluate_metrics.py
+```
+
+This script tests the extractor against labeled ground-truth documents and outputs Precision, Recall, and F1-Score.

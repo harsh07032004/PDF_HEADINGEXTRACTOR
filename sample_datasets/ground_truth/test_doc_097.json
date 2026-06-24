@@ -1,0 +1,82 @@
+[
+  {
+    "level": "H1",
+    "text": "1. Main Section 1: Lorem ipsum dolor sit amet,"
+  },
+  {
+    "level": "H2",
+    "text": "1.1 Subsection 1: Lorem ipsum dolor sit amet,"
+  },
+  {
+    "level": "H3",
+    "text": "1.1.1 Sub-subsection 1"
+  },
+  {
+    "level": "H2",
+    "text": "1.2 Subsection 2: Lorem ipsum dolor sit"
+  },
+  {
+    "level": "H3",
+    "text": "1.2.1 Sub-subsection 1"
+  },
+  {
+    "level": "H3",
+    "text": "1.2.2 Sub-subsection 2"
+  },
+  {
+    "level": "H1",
+    "text": "2. Main Section 2: Lorem ipsum"
+  },
+  {
+    "level": "H2",
+    "text": "2.1 Subsection 1: Lorem ipsum dolor sit amet, consectetur"
+  },
+  {
+    "level": "H3",
+    "text": "2.1.1 Sub-subsection 1"
+  },
+  {
+    "level": "H2",
+    "text": "2.2 Subsection 2: Lorem ipsum dolor sit"
+  },
+  {
+    "level": "H3",
+    "text": "2.2.1 Sub-subsection 1"
+  },
+  {
+    "level": "H3",
+    "text": "2.2.2 Sub-subsection 2"
+  },
+  {
+    "level": "H2",
+    "text": "2.3 Subsection 3: Lorem ipsum dolor sit amet,"
+  },
+  {
+    "level": "H3",
+    "text": "2.3.1 Sub-subsection 1"
+  },
+  {
+    "level": "H3",
+    "text": "2.3.2 Sub-subsection 2"
+  },
+  {
+    "level": "H1",
+    "text": "3. Main Section 3: Lorem ipsum dolor sit amet,"
+  },
+  {
+    "level": "H2",
+    "text": "3.1 Subsection 1: Lorem ipsum dolor sit amet,"
+  },
+  {
+    "level": "H3",
+    "text": "3.1.1 Sub-subsection 1"
+  },
+  {
+    "level": "H1",
+    "text": "4. Main Section 4: Lorem ipsum"
+  },
+  {
+    "level": "H2",
+    "text": "4.1 Subsection 1: Lorem ipsum dolor"
+  }
+]

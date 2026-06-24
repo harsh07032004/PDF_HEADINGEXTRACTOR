@@ -1,0 +1,54 @@
+[
+  {
+    "level": "H1",
+    "text": "Main Section 1: Lorem ipsum"
+  },
+  {
+    "level": "H2",
+    "text": "Subsection 1: Lorem ipsum dolor sit"
+  },
+  {
+    "level": "H3",
+    "text": "Sub-subsection 1"
+  },
+  {
+    "level": "H3",
+    "text": "Sub-subsection 2"
+  },
+  {
+    "level": "H2",
+    "text": "Subsection 2: Lorem ipsum dolor sit amet, consectetur"
+  },
+  {
+    "level": "H3",
+    "text": "Sub-subsection 1"
+  },
+  {
+    "level": "H2",
+    "text": "Subsection 3: Lorem ipsum dolor sit"
+  },
+  {
+    "level": "H3",
+    "text": "Sub-subsection 1"
+  },
+  {
+    "level": "H3",
+    "text": "Sub-subsection 2"
+  },
+  {
+    "level": "H1",
+    "text": "Main Section 2: Lorem ipsum dolor sit amet,"
+  },
+  {
+    "level": "H2",
+    "text": "Subsection 1: Lorem ipsum dolor sit"
+  },
+  {
+    "level": "H2",
+    "text": "Subsection 2: Lorem ipsum dolor sit"
+  },
+  {
+    "level": "H2",
+    "text": "Subsection 3: Lorem ipsum dolor sit"
+  }
+]

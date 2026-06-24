@@ -12,7 +12,7 @@ Architecture:
     │  3. _build_blocks()       — group spans into lines   │
     │  4. _detect_title()       — largest-font first block │
     │  5. _cluster_font_sizes() — body vs heading sizes    │
-    │  6. _build_features()     — 8 ML-ready features      │
+    │  6. _build_features()     — 17 ML-ready features     │
     │  7. _compute_confidence() — hybrid TOC + typography  │
     │  8. _classify_level()     — H1 / H2 / H3 assignment  │
     │  9. _deduplicate()        — remove near-duplicates   │
@@ -360,8 +360,8 @@ class ExtractorEngine:
             # whole line is considered a watermark candidate
             is_light_gray = any(s["color_is_light"] for s in line_spans)
 
-            x0 = min(float(s["bbox"][0]) for s in line_spans)
-            y0_exact = min(float(s["bbox"][1]) for s in line_spans)
+            x0 = min(float(s["bbox"][0]) for s in line_spans) # leftmost
+            y0_exact = min(float(s["bbox"][1]) for s in line_spans) # topmost
             x1 = max(float(s["bbox"][2]) for s in line_spans)
             y1 = max(float(s["bbox"][3]) for s in line_spans)
             page_width = line_spans[0]["page_width"]
@@ -402,7 +402,7 @@ class ExtractorEngine:
                filter would incorrectly delete all content.
             3. Spatial + density: drop blocks whose y0 ratio puts them in the
                center band of the page (25%–75%) AND whose character-to-area
-               density is very low (large font, few chars) — the NPTEL
+               density is very low (large font, few chars) —  Ex : the NPTEL
                watermark geometry.
         """
         if not blocks:
